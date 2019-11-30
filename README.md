@@ -1,6 +1,6 @@
 Yii2-ihuyi
 ==========
-Yii2互亿无线SDK
+Yii2 ihuyi sms SDK
 
 Installation
 ------------
@@ -28,4 +28,4 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \dovechen\yii2\ihuyi\AutoloadExample::widget(); ?>```
+```

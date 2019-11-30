@@ -23,7 +23,7 @@
 		/**
 		 * ihuyi config
 		 * sms: normal sms
-		 * eg: ['appid' => '', 'appkey' => '']
+		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
 		 */
@@ -32,7 +32,7 @@
 		/**
 		 * ihuyi config
 		 * i-sms: international sms
-		 * eg: ['appid' => '', 'appkey' => '']
+		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
 		 */
@@ -41,7 +41,7 @@
 		/**
 		 * ihuyi config
 		 * v-sms: voice sms
-		 * eg: ['appid' => '', 'appkey' => '']
+		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
 		 */
@@ -50,7 +50,7 @@
 		/**
 		 * ihuyi config
 		 * vn-sms: voice notice sms
-		 * eg: ['appid' => '', 'appkey' => '']
+		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
 		 */
@@ -59,7 +59,7 @@
 		/**
 		 * ihuyi config
 		 * m-sms: marketing sms
-		 * eg: ['appid' => '', 'appkey' => '']
+		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
 		 */
@@ -68,7 +68,7 @@
 		/**
 		 * ihuyi config
 		 * c-sms: color sms
-		 * eg: ['appid' => '', 'appkey' => '']
+		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
 		 */
