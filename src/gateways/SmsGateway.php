@@ -6,6 +6,10 @@
 	use yii\base\InvalidConfigException;
 	use yii\base\InvalidParamException;
 
+	/**
+	 * Class SmsGateway
+	 * @package dovechen\yii2\ihuyi\src\gateways
+	 */
 	class SmsGateway extends IhuyiComponent
 	{
 		const SEND_URL = 'http://106.ihuyi.cn/webservice/sms.php?method=Submit';

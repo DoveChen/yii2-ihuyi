@@ -3,9 +3,10 @@
 	namespace dovechen\yii2\ihuyi;
 
 	use dovechen\yii2\ihuyi\components\BaseIhuyi;
-	use dovechen\yii2\ihuyi\src\gateways\ISmsGateway;
+	use dovechen\yii2\ihuyi\src\gateways\InternationalGateway;
 	use dovechen\yii2\ihuyi\src\gateways\MarketingGateway;
 	use dovechen\yii2\ihuyi\src\gateways\SmsGateway;
+	use dovechen\yii2\ihuyi\src\gateways\VoiceGateway;
 	use yii\base\InvalidConfigException;
 	use yii\base\Object;
 	use yii\helpers\ArrayHelper;
@@ -87,9 +88,16 @@
 		/**
 		 * International sms.
 		 *
-		 * @var ISmsGateway
+		 * @var InternationalGateway
 		 */
 		private $_isms;
+
+		/**
+		 * Voice sms.
+		 *
+		 * @var VoiceGateway
+		 */
+		private $_vsms;
 
 		/**
 		 * Marketing sms.
@@ -188,17 +196,33 @@
 		/**
 		 * Get international sms.
 		 *
-		 * @return ISmsGateway
+		 * @return InternationalGateway
 		 *
 		 * @throws InvalidConfigException
 		 */
 		public function getInternational ()
 		{
 			if ($this->_isms === NULL) {
-				$this->_isms = \Yii::createObject('dovechen\yii2\ihuyi\src\gateways\ISmsGateway', [$this]);
+				$this->_isms = \Yii::createObject('dovechen\yii2\ihuyi\src\gateways\InternationalGateway', [$this]);
 			}
 
 			return $this->_isms;
+		}
+
+		/**
+		 * Get voice sms.
+		 *
+		 * @return VoiceGateway
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getVoice ()
+		{
+			if ($this->_vsms === NULL) {
+				$this->_vsms = \Yii::createObject('dovechen\yii2\ihuyi\src\gateways\VoiceGateway', [$this]);
+			}
+
+			return $this->_vsms;
 		}
 
 		/**
@@ -283,6 +307,33 @@
 		public function getInternationalNum ()
 		{
 			return $this->getInternational()->getNum();
+		}
+
+		/**
+		 * Send voice sms.
+		 *
+		 * @param $mobile
+		 * @param $content
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function sendVoice ($mobile, $content)
+		{
+			return $this->getVoice()->send($mobile, $content);
+		}
+
+		/**
+		 * Get voice num.
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getVoiceNum ()
+		{
+			return $this->getVoice()->getNum();
 		}
 
 		/**
