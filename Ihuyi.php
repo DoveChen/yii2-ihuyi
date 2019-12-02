@@ -7,6 +7,7 @@
 	use dovechen\yii2\ihuyi\src\gateways\MarketingGateway;
 	use dovechen\yii2\ihuyi\src\gateways\SmsGateway;
 	use dovechen\yii2\ihuyi\src\gateways\VoiceGateway;
+	use dovechen\yii2\ihuyi\src\gateways\VoiceNoticeGateway;
 	use yii\base\InvalidConfigException;
 	use yii\base\Object;
 	use yii\helpers\ArrayHelper;
@@ -98,6 +99,13 @@
 		 * @var VoiceGateway
 		 */
 		private $_vsms;
+
+		/**
+		 * Voice notice sms.
+		 *
+		 * @var VoiceNoticeGateway
+		 */
+		private $_vnsms;
 
 		/**
 		 * Marketing sms.
@@ -226,6 +234,22 @@
 		}
 
 		/**
+		 * Get voice notice sms.
+		 *
+		 * @return VoiceNoticeGateway
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getVoiceNotice ()
+		{
+			if ($this->_vnsms === NULL) {
+				$this->_vnsms = \Yii::createObject('dovechen\yii2\ihuyi\src\gateways\VoiceNoticeGateway', [$this]);
+			}
+
+			return $this->_vsms;
+		}
+
+		/**
 		 * Get marketing sms.
 		 *
 		 * @return MarketingGateway
@@ -334,6 +358,33 @@
 		public function getVoiceNum ()
 		{
 			return $this->getVoice()->getNum();
+		}
+
+		/**
+		 * Send voice notice sms.
+		 *
+		 * @param $mobile
+		 * @param $content
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function sendVoiceNotice ($mobile, $content)
+		{
+			return $this->getVoiceNotice()->send($mobile, $content);
+		}
+
+		/**
+		 * Get voice notice num.
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getVoiceNoticeNum ()
+		{
+			return $this->getVoiceNotice()->getNum();
 		}
 
 		/**
