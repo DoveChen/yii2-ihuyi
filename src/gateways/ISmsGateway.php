@@ -6,11 +6,10 @@
 	use yii\base\InvalidConfigException;
 	use yii\base\InvalidParamException;
 
-	class SmsGateway extends IhuyiComponent
+	class ISmsGateway extends IhuyiComponent
 	{
-		const SEND_URL = 'http://106.ihuyi.cn/webservice/sms.php?method=Submit';
-		const GET_NUM_URL = 'http://106.ihuyi.com/webservice/sms.php?method=GetNum';
-		const ADD_TEMPLATE_URL = 'http://106.ihuyi.com/webservice/sms.php?method=AddTemplate';
+		const SEND_URL = 'http://api.isms.ihuyi.com/webservice/isms.php?method=Submit';
+		const GET_NUM_URL = 'http://api.isms.ihuyi.com/webservice/isms.php?method=GetNum';
 
 		/**
 		 * @inheritDoc
@@ -20,13 +19,13 @@
 		public function init ()
 		{
 			parent::init();
-			if (empty($this->ihuyi->sms['appid']) || empty($this->ihuyi->sms['apikey'])) {
+			if (empty($this->ihuyi->isms['appid']) || empty($this->ihuyi->isms['apikey'])) {
 				throw new InvalidConfigException('The "appid" and "apikey" properties must be set.');
 			}
 		}
 
 		/**
-		 * Send normal sms.
+		 * Send international sms.
 		 *
 		 * @param $modile
 		 * @param $content
@@ -41,8 +40,8 @@
 
 			$time     = time();
 			$postData = [
-				'account'  => $this->ihuyi->sms['appid'],
-				'password' => md5($this->ihuyi->sms['appid'] . $this->ihuyi->sms['apikey'] . $mobile . $content . $time),
+				'account'  => $this->ihuyi->isms['appid'],
+				'password' => md5($this->ihuyi->isms['appid'] . $this->ihuyi->isms['apikey'] . $mobile . $content . $time),
 				'mobile'   => $mobile,
 				'content'  => $content,
 				'time'     => $time,
@@ -52,7 +51,7 @@
 		}
 
 		/**
-		 * Get normal sms num.
+		 * Get international sms num.
 		 *
 		 * @return mixed
 		 */
@@ -66,27 +65,5 @@
 			];
 
 			return $this->ihuyi->httpPost(self::GET_NUM_URL, $postData);
-		}
-
-		/**
-		 * Add normal sms template.
-		 *
-		 * @param $content
-		 *
-		 * @return mixed
-		 */
-		public function addTemplate ($content)
-		{
-			if (empty($content)) {
-				throw new InvalidParamException('The  "content" propoerty must be set.');
-			}
-
-			$postData = [
-				'account'  => $this->ihuyi->sms['appid'],
-				'password' => md5($this->ihuyi->sms['apikey']),
-				'content'  => $content,
-			];
-
-			return $this->ihuyi->httpPost(self::ADD_TEMPLATE_URL, $postData);
 		}
 	}

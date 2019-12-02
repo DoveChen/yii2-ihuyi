@@ -3,6 +3,7 @@
 	namespace dovechen\yii2\ihuyi;
 
 	use dovechen\yii2\ihuyi\components\BaseIhuyi;
+	use dovechen\yii2\ihuyi\src\gateways\ISmsGateway;
 	use dovechen\yii2\ihuyi\src\gateways\MarketingGateway;
 	use dovechen\yii2\ihuyi\src\gateways\SmsGateway;
 	use yii\base\InvalidConfigException;
@@ -77,11 +78,18 @@
 		public $csms = [];
 
 		/**
-		 * Marketing sms.
+		 * Normal sms.
 		 *
 		 * @var SmsGateway
 		 */
 		private $_sms;
+
+		/**
+		 * International sms.
+		 *
+		 * @var ISmsGateway
+		 */
+		private $_isms;
 
 		/**
 		 * Marketing sms.
@@ -178,6 +186,22 @@
 		}
 
 		/**
+		 * Get international sms.
+		 *
+		 * @return ISmsGateway
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getInternational ()
+		{
+			if ($this->_isms === NULL) {
+				$this->_isms = \Yii::createObject('dovechen\yii2\ihuyi\src\gateways\ISmsGateway', [$this]);
+			}
+
+			return $this->_isms;
+		}
+
+		/**
 		 * Get marketing sms.
 		 *
 		 * @return MarketingGateway
@@ -232,6 +256,33 @@
 		public function addSmsTemplate ($content)
 		{
 			return $this->getSms()->addTemplate($content);
+		}
+
+		/**
+		 * Send international sms.
+		 *
+		 * @param $mobile
+		 * @param $content
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function sendInternational ($mobile, $content)
+		{
+			return $this->getInternational()->send($mobile, $content);
+		}
+
+		/**
+		 * Get international num.
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getInternationalNum ()
+		{
+			return $this->getInternational()->getNum();
 		}
 
 		/**
