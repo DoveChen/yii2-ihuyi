@@ -5,6 +5,7 @@
 	use dovechen\yii2\ihuyi\components\BaseIhuyi;
 	use dovechen\yii2\ihuyi\src\gateways\InternationalGateway;
 	use dovechen\yii2\ihuyi\src\gateways\MarketingGateway;
+	use dovechen\yii2\ihuyi\src\gateways\MmsGateway;
 	use dovechen\yii2\ihuyi\src\gateways\SmsGateway;
 	use dovechen\yii2\ihuyi\src\gateways\VoiceGateway;
 	use dovechen\yii2\ihuyi\src\gateways\VoiceNoticeGateway;
@@ -27,7 +28,7 @@
 
 		/**
 		 * ihuyi config
-		 * sms: normal sms
+		 * normal sms
 		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
@@ -36,7 +37,7 @@
 
 		/**
 		 * ihuyi config
-		 * i-sms: international sms
+		 * international sms
 		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
@@ -45,7 +46,7 @@
 
 		/**
 		 * ihuyi config
-		 * v-sms: voice sms
+		 * voice sms
 		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
@@ -54,7 +55,7 @@
 
 		/**
 		 * ihuyi config
-		 * vn-sms: voice notice sms
+		 * voice notice sms
 		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
@@ -63,7 +64,7 @@
 
 		/**
 		 * ihuyi config
-		 * m-sms: marketing sms
+		 * marketing sms
 		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
@@ -72,12 +73,12 @@
 
 		/**
 		 * ihuyi config
-		 * c-sms: color sms
+		 * multimedia sms
 		 * eg: ['appid' => '', 'apikey' => '']
 		 *
 		 * @var array
 		 */
-		public $csms = [];
+		public $mms = [];
 
 		/**
 		 * Normal sms.
@@ -115,6 +116,13 @@
 		private $_marketing;
 
 		/**
+		 * Multimedia sms.
+		 *
+		 * @var MmsGateway
+		 */
+		private $_mms;
+
+		/**
 		 * @inheritDoc
 		 *
 		 * @throws InvalidConfigException
@@ -124,8 +132,8 @@
 
 			parent::init();
 
-			if (empty($this->sms) && empty($this->isms) && empty($this->vsms) && empty($this->vnsms) && empty($this->msms) && empty($this->csms)) {
-				throw new InvalidConfigException('The "sms"/"isms"/"vsms"/"vnsms"/"msms"/"csms" property must be last one set.');
+			if (empty($this->sms) && empty($this->isms) && empty($this->vsms) && empty($this->vnsms) && empty($this->msms) && empty($this->mms)) {
+				throw new InvalidConfigException('The "sms"/"isms"/"vsms"/"vnsms"/"msms"/"mms" property must be last one set.');
 			}
 		}
 
@@ -178,6 +186,28 @@
 				} else {
 					if (!empty($response['AddTemplateResult']['templateid'])) {
 						$result['templateid'] = $response['AddTemplateResult']['templateid'];
+					}
+				}
+			} elseif (isset($response['SendMmsResult'])) {
+				if ($response['SendMmsResult']['code'] != 2) {
+					$result = [
+						'error'     => $response['SendMmsResult']['code'],
+						'error_msg' => $response['SendMmsResult']['msg'],
+					];
+				} else {
+					if (!empty($response['SendMmsResult']['mmsid'])) {
+						$result['mmsid'] = $response['SendMmsResult']['mmsid'];
+					}
+				}
+			} elseif (isset($response['CreateMmsResult'])) {
+				if ($response['CreateMmsResult']['code'] != 2) {
+					$result = [
+						'error'     => $response['CreateMmsResult']['code'],
+						'error_msg' => $response['CreateMmsResult']['msg'],
+					];
+				} else {
+					if (!empty($response['CreateMmsResult']['mmsid'])) {
+						$result['mmsid'] = $response['CreateMmsResult']['mmsid'];
 					}
 				}
 			}
@@ -263,6 +293,21 @@
 			}
 
 			return $this->_marketing;
+		}
+
+		/**
+		 * Get multimedia sms.
+		 *
+		 * @return MmsGateway
+		 * @throws InvalidConfigException
+		 */
+		public function getMms ()
+		{
+			if ($this->_mms === NULL) {
+				$this->mms = \Yii::createObject('dovechen\yii2\ihuyi\src\gateways\MmsGateway', [$this]);
+			}
+
+			return $this->_mms;
 		}
 
 		/**
@@ -390,16 +435,17 @@
 		/**
 		 * Send marketing sms.
 		 *
-		 * @param $mobile
-		 * @param $content
+		 * @param      $mobile
+		 * @param      $content
+		 * @param null $stime
 		 *
 		 * @return mixed
 		 *
 		 * @throws InvalidConfigException
 		 */
-		public function sendMarketing ($mobile, $content)
+		public function sendMarketing ($mobile, $content, $stime = NULL)
 		{
-			return $this->getMarketing()->send($mobile, $content);
+			return $this->getMarketing()->send($mobile, $content, $stime);
 		}
 
 		/**
@@ -412,6 +458,50 @@
 		public function getMarketingNum ()
 		{
 			return $this->getMarketing()->getNum();
+		}
+
+		/**
+		 * Send multimedia sms.
+		 *
+		 * @param      $mobile
+		 * @param      $mmsid
+		 * @param      $pid
+		 * @param null $time
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function sendMms ($mobile, $mmsid, $pid, $time = NULL)
+		{
+			return $this->getMms()->send($mobile, $mmsid, $pid, $time);
+		}
+
+		/**
+		 * Get multimedia num.
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getMmsNum ()
+		{
+			return $this->getMms()->getNum();
+		}
+
+		/**
+		 * Create multimedia sms.
+		 *
+		 * @param $title
+		 * @param $zipFile
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function createMms ($title, $zipFile)
+		{
+			return $this->getMms()->create($title, $zipFile);
 		}
 
 	}
