@@ -24,7 +24,7 @@
 		{
 			parent::init();
 			if (empty($this->ihuyi->msms['appid']) || empty($this->ihuyi->msms['apikey'])) {
-				throw new InvalidConfigException('The "appid" and "appkey" properties must be set.');
+				throw new InvalidConfigException('The "appid" and "apikey" properties must be set.');
 			}
 		}
 
@@ -81,9 +81,6 @@
 				'password' => md5($this->ihuyi->msms['appid'] . $this->ihuyi->msms['apikey'] . $time),
 				'time'     => $time,
 			];
-			if (!empty($stime)) {
-				$postData['stime'] = $stime;
-			}
 
 			return $this->ihuyi->httpPost(self::GET_NUM_URL, $postData);
 		}

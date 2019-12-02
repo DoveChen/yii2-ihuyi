@@ -3,6 +3,8 @@
 	namespace dovechen\yii2\ihuyi;
 
 	use dovechen\yii2\ihuyi\components\BaseIhuyi;
+	use dovechen\yii2\ihuyi\src\gateways\MarketingGateway;
+	use dovechen\yii2\ihuyi\src\gateways\SmsGateway;
 	use yii\base\InvalidConfigException;
 	use yii\base\Object;
 	use yii\helpers\ArrayHelper;
@@ -77,7 +79,14 @@
 		/**
 		 * Marketing sms.
 		 *
-		 * @var Object
+		 * @var SmsGateway
+		 */
+		private $_sms;
+
+		/**
+		 * Marketing sms.
+		 *
+		 * @var MarketingGateway
 		 */
 		private $_marketing;
 
@@ -136,15 +145,42 @@
 						$result['num'] = $response['GetNumResult']['num'];
 					}
 				}
+			} elseif (isset($response['AddTemplateResult'])) {
+				if ($response['AddTemplateResult']['code'] != 2) {
+					$result = [
+						'error'     => $response['AddTemplateResult']['code'],
+						'error_msg' => $response['AddTemplateResult']['msg'],
+					];
+				} else {
+					if (!empty($response['AddTemplateResult']['templateid'])) {
+						$result['templateid'] = $response['AddTemplateResult']['templateid'];
+					}
+				}
 			}
 
 			return $result;
 		}
 
 		/**
+		 * Get normal sms.
+		 *
+		 * @return SmsGateway
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getSms ()
+		{
+			if ($this->_sms === NULL) {
+				$this->_sms = \Yii::createObject('dovechen\yii2\ihuyi\src\gateways\SmsGateway', [$this]);
+			}
+
+			return $this->_sms;
+		}
+
+		/**
 		 * Get marketing sms.
 		 *
-		 * @return object|Object
+		 * @return MarketingGateway
 		 *
 		 * @throws InvalidConfigException
 		 */
@@ -155,6 +191,47 @@
 			}
 
 			return $this->_marketing;
+		}
+
+		/**
+		 * Send normal sms.
+		 *
+		 * @param $mobile
+		 * @param $content
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function sendSms ($mobile, $content)
+		{
+			return $this->getSms()->send($mobile, $content);
+		}
+
+		/**
+		 * Get normal num.
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function getSmsNum ()
+		{
+			return $this->getSms()->getNum();
+		}
+
+		/**
+		 * Add normal sms template.
+		 *
+		 * @param $content
+		 *
+		 * @return mixed
+		 *
+		 * @throws InvalidConfigException
+		 */
+		public function addSmsTemplate ($content)
+		{
+			return $this->getSms()->addTemplate($content);
 		}
 
 		/**
