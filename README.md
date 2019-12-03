@@ -89,7 +89,7 @@ International sms:
 $sendResult = Yii::$app->ihuyi->sendInternational('+86 15395090543', 'Your code is 1123.');
 
 // Get international sms.
-$smsNumInfo = Yii::$app->ihuyi->getSmsNum();
+$smsNumInfo = Yii::$app->ihuyi->getInternationalNum();
 ```
 Voice sms:
 ```php
