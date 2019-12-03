@@ -81,7 +81,7 @@ $sendResult = Yii::$app->ihuyi->sendSms('15395090543', 'Your code is 1123.');
 $smsNumInfo = Yii::$app->ihuyi->getSmsNum();
 
 // Add normal sms template.
-$smsNumInfo = Yii::$app->ihuyi->addSmsTemplate('Your code is【变量】');
+$smsTemplateInfo = Yii::$app->ihuyi->addSmsTemplate('Your code is【变量】');
 ```
 International sms:
 ```php
@@ -89,7 +89,7 @@ International sms:
 $sendResult = Yii::$app->ihuyi->sendInternational('+86 15395090543', 'Your code is 1123.');
 
 // Get international sms.
-$smsNumInfo = Yii::$app->ihuyi->getInternationalNum();
+$internationalNumInfo = Yii::$app->ihuyi->getInternationalNum();
 ```
 Voice sms:
 ```php
@@ -97,7 +97,7 @@ Voice sms:
 $sendResult = Yii::$app->ihuyi->sendVoice('15395090543', '1123');
 
 // Get voice sms.
-$smsNumInfo = Yii::$app->ihuyi->getVoiceNum();
+$voiceNumInfo = Yii::$app->ihuyi->getVoiceNum();
 ```
 Voice notice sms:
 ```php
@@ -105,7 +105,7 @@ Voice notice sms:
 $sendResult = Yii::$app->ihuyi->sendVoiceNotice('15395090543', 'Your code is 1123.');
 
 // Get voice notice sms.
-$smsNumInfo = Yii::$app->ihuyi->getVoiceNoticeNum();
+$voiceNoticeNumInfo = Yii::$app->ihuyi->getVoiceNoticeNum();
 ```
 Marketing sms:
 ```php
@@ -114,7 +114,7 @@ $sendResult = Yii::$app->ihuyi->sendMarketing('15395090543,15395090544', 'Your c
 $sendResult = Yii::$app->ihuyi->sendMarketing(['15395090543', '15395090544'], 'Your code is 1123.');
 
 // Get marketing sms.
-$smsNumInfo = Yii::$app->ihuyi->getMarketingNum();
+$marketingNumInfo = Yii::$app->ihuyi->getMarketingNum();
 ```
 Multimedia sms:
 ```php
@@ -124,8 +124,8 @@ $sendResult = Yii::$app->ihuyi->sendMms('15395090543,15395090544', 10048, 1001);
 $sendResult = Yii::$app->ihuyi->sendMms(['15395090543', '15395090544'], 10048, 1001);
 
 // Get multimedia sms.
-$smsNumInfo = Yii::$app->ihuyi->getMmsNum();
+$multimediaNumInfo = Yii::$app->ihuyi->getMmsNum();
 
 // Create multimedia sms.
-$smsNumInfo = Yii::$app->ihuyi->createMms('New mutledia title', $zipFile);
+$multimediaInfo = Yii::$app->ihuyi->createMms('New mutledia title', $zipFile);
 ```

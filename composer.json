@@ -2,7 +2,7 @@
     "name": "dovechen/yii2-ihuyi",
     "description": "Yii2 ihuyi sms SDK",
     "type": "yii2-extension",
-    "keywords": ["yii2","extension","ihuyi","yii2-ihuyi", "sms"],
+    "keywords": ["yii2","extension","ihuyi","yii2-ihuyi", "sms", "短信", "互亿无线"],
     "license": "MIT",
     "authors": [
         {
