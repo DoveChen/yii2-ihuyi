@@ -2,9 +2,9 @@
 
 	namespace dovechen\yii2\ihuyi\src\gateways;
 
+	use app\components\InvalidParameterException;
 	use dovechen\yii2\ihuyi\components\IhuyiComponent;
 	use yii\base\InvalidConfigException;
-	use yii\base\InvalidParamException;
 
 	/**
 	 * Class MarketingGateway
@@ -40,7 +40,7 @@
 		public function send ($mobile, $content, $stime = NULL)
 		{
 			if (empty($mobile) || empty($content)) {
-				throw new InvalidParamException('The "mobile" and "content" propoerties must be set.');
+				throw new InvalidParameterException('The "mobile" and "content" propoerties must be set.');
 			}
 
 			if (is_string($mobile)) {
@@ -48,7 +48,7 @@
 			}
 
 			if (count($mobile) < 2) {
-				throw new InvalidParamException('The send to people must be than one.');
+				throw new InvalidParameterException('The send to people must be than one.');
 			}
 
 			$mobile = implode(',', $mobile);

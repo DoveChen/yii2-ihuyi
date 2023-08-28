@@ -2,9 +2,9 @@
 
 	namespace dovechen\yii2\ihuyi\src\gateways;
 
+	use app\components\InvalidParameterException;
 	use dovechen\yii2\ihuyi\components\IhuyiComponent;
 	use yii\base\InvalidConfigException;
-	use yii\base\InvalidParamException;
 
 	/**
 	 * Class VoiceGateway
@@ -35,11 +35,12 @@
 		 * @param $content
 		 *
 		 * @return mixed
+		 * @throws InvalidParameterException
 		 */
 		public function send ($mobile, $content)
 		{
 			if (empty($mobile) || empty($content)) {
-				throw new InvalidParamException('The "mobile" and "content" propoerties must be set.');
+				throw new InvalidParameterException('The "mobile" and "content" propoerties must be set.');
 			}
 
 			$time     = time();

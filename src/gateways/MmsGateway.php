@@ -2,9 +2,9 @@
 
 	namespace dovechen\yii2\ihuyi\src\gateways;
 
+	use app\components\InvalidParameterException;
 	use dovechen\yii2\ihuyi\components\IhuyiComponent;
 	use yii\base\InvalidConfigException;
-	use yii\base\InvalidParamException;
 
 	/**
 	 * Class MmsGateway
@@ -38,11 +38,12 @@
 		 * @param null $time
 		 *
 		 * @return mixed
+		 * @throws InvalidParameterException
 		 */
 		public function send ($mobile, $mmsid, $pid, $time = NULL)
 		{
 			if (empty($mobile) || empty($mmsid) || empty($pid)) {
-				throw new InvalidParamException('The "mobile" and "mmsid" and "product id" propoerties must be set.');
+				throw new InvalidParameterException('The "mobile" and "mmsid" and "product id" propoerties must be set.');
 			}
 
 			if (is_array($mobile)) {

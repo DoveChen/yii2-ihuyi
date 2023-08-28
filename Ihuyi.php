@@ -10,8 +10,6 @@
 	use dovechen\yii2\ihuyi\src\gateways\VoiceGateway;
 	use dovechen\yii2\ihuyi\src\gateways\VoiceNoticeGateway;
 	use yii\base\InvalidConfigException;
-	use yii\base\Object;
-	use yii\helpers\ArrayHelper;
 
 	/**
 	 * Class Ihuyi
@@ -19,12 +17,12 @@
 	 */
 	class Ihuyi extends BaseIhuyi
 	{
-		const NORMAL_SMS = 1;
+		const NORMAL_SMS        = 1;
 		const INTERNATIONAL_SMS = 2;
-		const VOICE_SMS = 3;
-		const VOICE_NOTICE_SMS = 4;
-		const MARKETING_SMS = 5;
-		const COLOR_SMS = 6;
+		const VOICE_SMS         = 3;
+		const VOICE_NOTICE_SMS  = 4;
+		const MARKETING_SMS     = 5;
+		const COLOR_SMS         = 6;
 
 		/**
 		 * ihuyi config

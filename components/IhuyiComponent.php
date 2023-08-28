@@ -2,13 +2,13 @@
 
 	namespace dovechen\yii2\ihuyi\components;
 
-	use yii\base\Object;
+	use yii\base\BaseObject;
 
 	/**
 	 * Class IhuyiComponent
 	 * @package dovechen\yii2\ihuyi\component
 	 */
-	class IhuyiComponent extends Object
+	class IhuyiComponent extends BaseObject
 	{
 		/**
 		 * @var BaseIhuyi $ihuyi
